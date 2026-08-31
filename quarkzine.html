@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuarkZine — Issue Archive</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root{
+    --bg:#0a0a0a;
+    --bg-panel:#111412;
+    --line:#2a2f2c;
+    --ink:#e9f7ec;
+    --dim:#8a978d;
+    --green:#39ff8f;
+    --green-dim:#1c7a49;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      linear-gradient(rgba(57,255,143,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(57,255,143,0.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+    color:var(--ink);
+    font-family:'Space Mono', monospace;
+    padding:0 0 80px;
+  }
+
+  header{
+    padding:56px 24px 40px;
+    text-align:center;
+    position:relative;
+  }
+
+  .masthead{
+    font-family:'Rajdhani', sans-serif;
+    font-weight:700;
+    font-size:clamp(2.6rem, 9vw, 5.2rem);
+    line-height:0.9;
+    letter-spacing:1px;
+    display:inline-block;
+    color:var(--green);
+    text-shadow:0 0 18px rgba(57,255,143,0.35);
+  }
+
+  .tagline{
+    margin-top:20px;
+    font-size:0.9rem;
+    color:var(--dim);
+    letter-spacing:0.02em;
+    max-width:480px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.6;
+  }
+
+  .count-strip{
+    margin-top:20px;
+    display:inline-block;
+    border:1px solid var(--green-dim);
+    color:var(--green);
+    padding:6px 16px;
+    font-size:0.75rem;
+    letter-spacing:0.08em;
+  }
+
+  main{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:34px 28px;
+  }
+
+  .issue{
+    position:relative;
+    background:var(--bg-panel);
+    padding:12px 12px 16px;
+    border:1px solid var(--line);
+    transition:border-color 0.2s ease;
+  }
+
+  .issue:hover{
+    border-color:var(--green-dim);
+  }
+
+  .cover-link{
+    display:block;
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+    aspect-ratio:3/4;
+    background:#1a1d1b;
+  }
+
+  .cover-link img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter:grayscale(0.15) contrast(1.05);
+    transition:filter 0.3s ease;
+  }
+
+  .cover-link:hover img{
+    filter:grayscale(0) contrast(1.1);
+  }
+
+  .cover-link::after{
+    content:"READ ISSUE →";
+    position:absolute;
+    inset:auto 0 0 0;
+    background:var(--green);
+    color:#06110a;
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:0.7rem;
+    letter-spacing:0.04em;
+    text-align:center;
+    padding:8px 0;
+    transform:translateY(100%);
+    transition:transform 0.2s ease;
+  }
+
+  .cover-link:hover::after{
+    transform:translateY(0);
+  }
+
+  .issue-meta{
+    padding-top:14px;
+  }
+
+  .issue-num{
+    font-family:'Rajdhani', sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    color:var(--green-dim);
+    line-height:1;
+  }
+
+  .issue-title{
+    font-family:'Rajdhani', sans-serif;
+    font-weight:700;
+    font-size:1.25rem;
+    margin:4px 0 8px;
+    line-height:1.1;
+    color:var(--ink);
+  }
+
+  .issue-blurb{
+    font-size:0.8rem;
+    line-height:1.55;
+    color:var(--dim);
+  }
+
+  .coming-soon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px dashed var(--line);
+    background:transparent;
+    min-height:100%;
+    padding:40px 20px;
+    text-align:center;
+    font-size:0.85rem;
+    color:var(--dim);
+  }
+
+  footer{
+    max-width:1100px;
+    margin:60px auto 0;
+    padding:0 24px;
+    font-size:0.75rem;
+    color:var(--dim);
+    border-top:1px solid var(--line);
+    padding-top:18px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cover-link img, .cover-link::after{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="masthead">QUARKZINE</div>
+  <p class="tagline">Field dispatches from Monster Island and Neon Waterplant — the QuarkForce issue archive.</p>
+  <div class="count-strip">9 ISSUES AND COUNTING</div>
+</header>
+
+<main>
+  <div class="grid" id="issue-grid"></div>
+</main>
+
+<footer>
+  QuarkForce © <span id="year"></span> — new issues added as they drop.
+</footer>
+
+<script>
+  // ---------------------------------------------------------------
+  // EDIT THIS LIST to add or update issues. Each time you publish a
+  // new issue, copy one block and fill in the four fields below.
+  //   image: path or URL to the cover photo
+  //   title: the issue's title
+  //   blurb: one or two lines about what's inside
+  //   link:  where the cover click should send readers
+  // ---------------------------------------------------------------
+  const ISSUES = [
+    { image: "https://placehold.co/600x800/111412/39ff8f?text=Issue+01", title: "Issue title here", blurb: "Add a short description of what this issue covers.", link: "#" },
+    { image: "https://placehold.co/600x800/111412/39ff8f?text=Issue+02", title: "Issue title here", blurb: "Add a short description of what this issue covers.", link: "#" },
+    { image: "https://placehold.co/600x800/111412/39ff8f?text=Issue+03", title: "Issue title here", blurb: "Add a short description of what this issue covers.", link: "#" },
+    { image: "https://placehold.co/600x800/111412/39ff8f?text=Issue+04", title: "Issue title here", blurb: "Add a short description of what this issue covers.", link: "#" },
+    { image: "https://placehold.co/600x800/111412/39ff8f?text=Issue+05", title: "Issue title here", blurb: "Add a short description of what this issue covers.", link: "#" },
+    { image: "https://placehold.co/600x800/111412/39ff8f?text=Issue+06", title: "Issue title here", blurb: "Add a short description of what this issue covers.", link: "#" },
+    { image: "https://placehold.co/600x800/111412/39ff8f?text=Issue+07", title: "Issue title here", blurb: "Add a short description of what this issue covers.", link: "#" },
+    { image: "https://placehold.co/600x800/111412/39ff8f?text=Issue+08", title: "Issue title here", blurb: "Add a short description of what this issue covers.", link: "#" },
+    { image: "https://placehold.co/600x800/111412/39ff8f?text=Issue+09", title: "Issue title here", blurb: "Add a short description of what this issue covers.", link: "#" },
+  ];
+
+  const grid = document.getElementById("issue-grid");
+
+  ISSUES.forEach((issue, i) => {
+    const num = String(i + 1).padStart(2, "0");
+    const card = document.createElement("div");
+    card.className = "issue";
+    card.innerHTML = `
+      <a class="cover-link" href="${issue.link}" target="_blank" rel="noopener">
+        <img src="${issue.image}" alt="Cover of ${issue.title}" loading="lazy">
+      </a>
+      <div class="issue-meta">
+        <div class="issue-num">No. ${num}</div>
+        <div class="issue-title">${issue.title}</div>
+        <div class="issue-blurb">${issue.blurb}</div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
